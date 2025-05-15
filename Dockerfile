@@ -1,34 +1,30 @@
-# Utiliser une image officielle PHP avec Apache
-FROM php:8.1-apache
+# Dockerfile
+FROM php:8.4-fpm
 
-# Installer les dépendances système
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    zip \
-    git \
-    unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd pdo pdo_mysql
+    git unzip libpq-dev libzip-dev zip libonig-dev \
+    && docker-php-ext-install pdo pdo_pgsql zip opcache
 
-# Activer le module Apache mod_rewrite
-RUN a2enmod rewrite
+    
+CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
+# Enable OPcache for performance
+#COPY docker/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
-# Installer Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Définir le répertoire de travail
-WORKDIR /var/www/html
+# Set working directory
+WORKDIR /var/www
 
-# Copier les fichiers du projet dans le conteneur
+# Copy app
 COPY . .
 
-# Installer les dépendances Symfony
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies
+RUN composer install --optimize-autoloader \
+ && chown -R www-data:www-data /var/www
 
-# Donner les permissions nécessaires
-RUN chown -R www-data:www-data /var/www/html/var
+# Use non-root user
+USER www-data
 
-# Exposer le port 80
-EXPOSE 80
+CMD ["php-fpm"]

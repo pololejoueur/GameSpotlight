@@ -1,26 +1,40 @@
-version: '3.8'
-
 services:
-  web:
+  database:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydatabase
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  nginx_web:
+    image: nginx:stable-alpine
+    container_name: nginx_web
+    ports:
+      - "80:80"
+    volumes:
+      - ./GameSpotlight/docker/nginx/conf.d:/etc/nginx/conf.d:rw
+    depends_on:
+      - symfony_app
+    networks:
+      - backend
+
+  symfony_app:
+    container_name: symfony_app
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8000:80"
-    volumes:
-      - .:/var/www/html
     depends_on:
-      - db
-
-  db:
-    image: mysql:8.0
+      - database
+    ports:
+      - "8000:8000"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: symfony
-      MYSQL_USER: symfony
-      MYSQL_PASSWORD: symfony
-    volumes:
-      - db_data:/var/lib/mysql
+      DATABASE_URL: "postgresql://myuser:mypassword@database:5432/mydatabase"
+    networks:
+      - backend
 
-volumes:
-  db_data:
+networks:
+  backend:

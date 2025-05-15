@@ -1,5 +1,4 @@
-// src/Service/CheapSharkApiService.php
-
+<?php
 namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -14,8 +13,6 @@ class CheapSharkApiService
     {
         $response = $this->client->request('GET', self::BASE_URL . '/deals', [
             'query' => [
-                'storeID' => 1,
-                'upperPrice' => 15,
                 'pageSize' => $limit,
                 'sortBy' => 'Deal Rating',
             ],
@@ -27,19 +24,7 @@ class CheapSharkApiService
     public function searchGames(string $title): array
     {
         $response = $this->client->request('GET', self::BASE_URL . '/games', [
-            'query' => [
-                'title' => $title,
-                'limit' => 5,
-            ],
-        ]);
-
-        return $response->toArray();
-    }
-
-    public function getGameDetails(string $gameId): array
-    {
-        $response = $this->client->request('GET', self::BASE_URL . '/games', [
-            'query' => ['id' => $gameId],
+            'query' => ['title' => $title],
         ]);
 
         return $response->toArray();

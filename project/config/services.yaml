@@ -6,9 +6,6 @@
 parameters:
 
 services:
-    App\Security\AppAuthenticator:
-        arguments:
-            $urlGenerator: '@router'
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.

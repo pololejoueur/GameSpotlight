@@ -1,0 +1,8 @@
+<h1>Search Results</h1>
+<ul>
+    {% for game in games %}
+        <li>{{ game.title }}</li>
+    {% endfor %}
+</ul>
+
+{{ knp_pagination_render(games) }}

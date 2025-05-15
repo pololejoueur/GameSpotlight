@@ -1,0 +1,41 @@
+# Ignore everything unnecessary for production image
+
+# Node and vendor stuff (vendor will be built inside container)
+node_modules
+vendor
+
+# Symfony cache & logs
+var/cache
+var/log
+var/sessions
+
+# Environment files
+.env.local
+.env.*.local
+
+# Git and editor junk
+.git
+.gitignore
+.gitattributes
+*.swp
+*.swo
+.idea
+.vscode
+
+# Docker-related exclusions
+docker-compose.override.yml
+docker-compose.dev.yml
+Dockerfile.dev
+
+# Tests and documentation
+/tests
+phpunit.xml
+phpunit.xml.dist
+README.md
+docs
+
+# System files
+.DS_Store
+Thumbs.db
+
+composer.lock

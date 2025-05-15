@@ -1,0 +1,8 @@
+<h1>Top Deals</h1>
+<ul>
+    {% for deal in deals %}
+        <li>{{ deal.title }} - {{ deal.salePrice }}$</li>
+    {% endfor %}
+</ul>
+
+{{ knp_pagination_render(deals) }}
