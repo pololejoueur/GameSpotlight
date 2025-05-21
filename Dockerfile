@@ -1,30 +1,28 @@
 # Dockerfile
 FROM php:8.4-fpm
 
-# Install dependencies
+# Install system dependencies + pdo_mysql
 RUN apt-get update && apt-get install -y \
-    git unzip libpq-dev libzip-dev zip libonig-dev \
-    && docker-php-ext-install pdo pdo_pgsql zip opcache
+    git unzip libzip-dev zip libonig-dev \
+    libpng-dev libjpeg-dev libfreetype6-dev libxml2-dev \
+  && docker-php-ext-configure gd --with-freetype --with-jpeg \
+  && docker-php-ext-install pdo pdo_mysql gd zip opcache
 
-    
-CMD ["php", "-S", "0.0.0.0:80", "-t", "public"]
-# Enable OPcache for performance
-#COPY docker/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+# Enable OPcache
+COPY docker/php/conf.d/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www
 
-# Copy app
+# Copy app sources
 COPY . .
 
-# Install PHP dependencies
+# Install PHP deps & fix permissions
 RUN composer install --optimize-autoloader \
  && chown -R www-data:www-data /var/www
 
-# Use non-root user
 USER www-data
 
 CMD ["php-fpm"]

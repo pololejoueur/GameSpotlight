@@ -1,8 +1,128 @@
-<h1>Top Deals</h1>
-<ul>
-    {% for deal in deals %}
-        <li>{{ deal.title }} - {{ deal.salePrice }}$</li>
-    {% endfor %}
-</ul>
+<style>
+body {
+  background-color: #f5f3ff;
+  font-family: 'Arial', sans-serif;
+  color: #4c1d95;
+}
 
-{{ knp_pagination_render(deals) }}
+.deals-page {
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #7c3aed;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.auth-buttons a {
+  background-color: #7c3aed;
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.3s ease;
+}
+
+.auth-buttons a:hover {
+  background-color: #5b21a8;
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.deal-card {
+  background-color: #ede9fe;
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.deal-card:hover {
+  background-color: #ddd6fe;
+  transform: scale(1.05);
+}
+
+.deal-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.deal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #6d28d9;
+  margin-bottom: 0.5rem;
+}
+
+.deal-price {
+  font-size: 1rem;
+  color: #4c1d95;
+}
+
+.pagination-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.pagination-container div {
+  background-color: #6b21a8;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-container div:hover {
+  background-color: #5b1999;
+}
+</style>
+
+<div class="deals-page">
+  <div class="page-header">
+    <h1 class="page-title">Top Deals</h1>
+    <div class="auth-buttons">
+      <a href="{{ path('app_login') }}">Se connecter</a>
+      <a href="{{ path('app_register') }}">Créer un compte</a>
+    </div>
+  </div>
+
+  <div class="deals-grid">
+    {% for deal in deals %}
+      <div class="deal-card">
+        <img src="{{ deal.imageUrl }}" alt="{{ deal.title }}" class="deal-image" />
+        <h3 class="deal-title">{{ deal.title }}</h3>
+        <p class="deal-price">{{ deal.salePrice }} $</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="pagination-container">
+    {{ knp_pagination_render(deals) }}
+  </div>
+</div>

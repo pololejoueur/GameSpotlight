@@ -9,7 +9,7 @@ class CheapSharkApiService
 
     public function __construct(private HttpClientInterface $client) {}
 
-    public function getTopDeals(int $limit = 10): array
+    public function getTopDeals(int $limit = 1000): array
     {
         $response = $this->client->request('GET', self::BASE_URL . '/deals', [
             'query' => [

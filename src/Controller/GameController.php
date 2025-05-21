@@ -15,22 +15,18 @@ class GameController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $deals = $this->apiService->getTopDeals();
-        $pagination = $paginator->paginate($deals, $request->query->getInt('page', 1), 10);
+    $deals = $this->apiService->getTopDeals();
 
-        return $this->render('home.html.twig', [
-            'deals' => $pagination,
-        ]);
-    }
+    // Ajouter le champ imageUrl pour chaque deal
+    $deals = array_map(function ($deal) {
+        $deal['imageUrl'] = $deal['thumb'];
+        return $deal;
+    }, $deals);
 
-    #[Route('/search/{title}', name: 'search')]
-    public function search(string $title, Request $request, PaginatorInterface $paginator): Response
-    {
-        $games = $this->apiService->searchGames($title);
-        $pagination = $paginator->paginate($games, $request->query->getInt('page', 1), 10);
+    $pagination = $paginator->paginate($deals, $request->query->getInt('page', 1), 10);
 
-        return $this->render('search.html.twig', [
-            'games' => $pagination,
-        ]);
+    return $this->render('home.html.twig', [
+        'deals' => $pagination,
+    ]);
     }
 }

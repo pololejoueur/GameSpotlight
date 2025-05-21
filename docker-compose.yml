@@ -1,12 +1,14 @@
 services:
   database:
-    image: postgres:15
+    image: mysql:8
+    container_name: mysql_container
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
     ports:
-      - "5432:5432"
+      - "3307:3306"
     networks:
       - backend
 
@@ -16,7 +18,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./GameSpotlight/docker/nginx/conf.d:/etc/nginx/conf.d:rw
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:rw
     depends_on:
       - symfony_app
     networks:
@@ -29,10 +31,8 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - database
-    ports:
-      - "8000:8000"
-    environment:
-      DATABASE_URL: "postgresql://myuser:mypassword@database:5432/mydatabase"
+    expose:
+      - 9000
     networks:
       - backend
 
