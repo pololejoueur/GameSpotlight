@@ -1,11 +1,87 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Register</h1>
+<style>
+body {
+  background-color: #f5f3ff;
+  font-family: 'Arial', sans-serif;
+  color: #4c1d95;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.register-container {
+  background-color: #ede9fe;
+  padding: 2rem 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.register-container h1 {
+  color: #7c3aed;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+form div {
+  margin-bottom: 1rem;
+}
+
+form label {
+  display: block;
+  color: #6d28d9;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #c4b5fd;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  color: #4c1d95;
+  font-size: 1rem;
+}
+
+form input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+button.btn {
+  background-color: #6b21a8;
+  color: white;
+  padding: 0.75rem;
+  width: 100%;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn:hover {
+  background-color: #5b1999;
+}
+</style>
+
+<div class="register-container">
+    <h1>Inscription</h1>
     {{ form_start(form) }}
+        {{ form_row(form.username) }}
         {{ form_row(form.email) }}
         {{ form_row(form.plainPassword) }}
         {{ form_row(form.agreeTerms) }}
-        <button class="btn">Register</button>
+        <button class="btn">S'inscrire</button>
     {{ form_end(form) }}
+</div>
 {% endblock %}
